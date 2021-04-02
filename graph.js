@@ -16,3 +16,16 @@ async function getUser() {
         .get();
 }
 
+//Get user's events for the upcoming week from Graph
+async function getEvents() {
+    ensureScope('Calendars.read');
+    const dateNow = new Date();
+    const dateNextWeek = new Date();
+    dateNextWeek.setDate(dateNextWeek.getDate() + 7);
+    const query = `startDateTime=${dateNow.toISOString()}&endDateTime=${dateNextWeek.toISOString()}`;
+
+    return await graphClient
+        .api('/me/calendarView').query(query).select('subject,start,end')
+        .orderby(`start/DateTime`)
+        .get();
+}
