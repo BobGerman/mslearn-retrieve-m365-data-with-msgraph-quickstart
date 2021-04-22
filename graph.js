@@ -22,7 +22,7 @@ async function getUser() {
 //   upn - User ID or User Profile Name for a person related to the files
 //   insightType - "trending", "used", or "shared"
 async function getFileInsights(upn, insight) {
-    const result = [];
+    let result = [];
     const userQueryPart = upn ? `/users/${upn}` : '/me';
 
     ensureScope('sites.read.all');
@@ -35,6 +35,12 @@ async function getFileInsights(upn, insight) {
         .get();
 
     if (trendingIds.value.length > 0) {
+//  PASS 1:
+        // result = trendingIds.value.map(t => ({
+        //     name: t.resourceReference.id,
+        //     webUrl: t.resourceReference.webUrl
+        // }));
+// PASS 2
         let i = 1;
         const batchRequests = trendingIds.value.map(t => ({
             id: (i++).toString(),
@@ -53,6 +59,7 @@ async function getFileInsights(upn, insight) {
                 result.push(await response.json());
             }
         }
+    // STOP HERE
     }
     return result;
 }

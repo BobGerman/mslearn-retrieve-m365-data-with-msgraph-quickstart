@@ -13,6 +13,7 @@ async function displayUI() {
     content.style = "display: block";
 }
 
+//#region Add for file insights
 document.getElementById('insightsButton').onclick =
 
     async function displayFileInsights() {
@@ -34,7 +35,9 @@ document.getElementById('insightsButton').onclick =
                     <h3>${insightName} files for ${upn ? upn : "/me"}:</h3>
                     <ul>
                         ${files.map(file => `<li>
-                        <a href="${file.webUrl}" target="_blank">${file.name}</a>
+                        <a href="${file.webUrl}" target="_blank">${file.name}</a><br />
+                        <i><small>Last modified by ${file.lastModifiedBy.user.email} 
+                            on ${file.lastModifiedDateTime}</small></i>
                         </li>`)}
                     </ul>
                     `;
@@ -44,3 +47,4 @@ document.getElementById('insightsButton').onclick =
             resultDiv.innerHTML = `<p>${error}<br /><br />${message}</p>`;
         }
     }
+//#endregion
