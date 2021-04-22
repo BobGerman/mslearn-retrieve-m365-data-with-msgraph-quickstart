@@ -1,10 +1,10 @@
-async function displayUI() {    
+async function displayUI() {
     await signIn();
 
     // Display info from user profile
     const user = await getUser();
     var userName = document.getElementById('userName');
-    userName.innerText = user.displayName;  
+    userName.innerText = user.displayName;
 
     // Hide login button and initial UI
     var signInButton = document.getElementById('signin');
@@ -13,21 +13,34 @@ async function displayUI() {
     content.style = "display: block";
 }
 
-async function displayTrending() {
+document.getElementById('insightsButton').onclick =
 
-    const resultDiv = document.getElementById('trendingFilesResult');
-    const upn = document.getElementById('trendingFilesUpn').value;
-    const trendingFiles = await getTrendingFiles(upn);
+    async function displayFileInsights() {
 
-    if (trendingFiles.length === 0) {
-        resultDiv.innerHTML = "No trending files found";
-    } else {
-        resultDiv.innerHTML = `
-          <ul>
-            ${trendingFiles.map(file => `<li>
-              <a href="${file.webUrl}" target="_blank">${file.name}</a>
-            </li>`)}
-          </ul>
-        `;
+        const upn = document.getElementById('insightsUpn').value;
+        const insightDropdownElement = document.getElementById('insightsType');
+        const insightName = insightDropdownElement.options[insightDropdownElement.selectedIndex].text;
+        const insightType = insightDropdownElement.value;
+
+        const resultDiv = document.getElementById('insightsResult');
+        try {
+
+            const files = await getFileInsights(upn, insightType);
+
+            if (files.length === 0) {
+                resultDiv.innerHTML = `<p>No ${insightType} files found</p>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <h3>${insightName} files for ${upn ? upn : "/me"}:</h3>
+                    <ul>
+                        ${files.map(file => `<li>
+                        <a href="${file.webUrl}" target="_blank">${file.name}</a>
+                        </li>`)}
+                    </ul>
+                    `;
+            }
+        } catch (error) {
+            const message = insightType === 'shared' ? "NOTE: Users can only read their own shared insights" : "";
+            resultDiv.innerHTML = `<p>${error}<br /><br />${message}</p>`;
+        }
     }
-}

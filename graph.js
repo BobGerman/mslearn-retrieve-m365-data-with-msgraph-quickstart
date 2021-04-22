@@ -18,14 +18,17 @@ async function getUser() {
 
 //#region Added Content
 
-async function getTrendingFiles(upn) {
+// getFileInsights() - Returns Office Graph Insights filtered to only files
+//   upn - User ID or User Profile Name for a person related to the files
+//   insightType - "trending", "used", or "shared"
+async function getFileInsights(upn, insight) {
     const result = [];
     const userQueryPart = upn ? `/users/${upn}` : '/me';
 
     ensureScope('sites.read.all');
-    
+
     const trendingIds = await graphClient
-        .api(`${userQueryPart}/insights/trending`)
+        .api(`${userQueryPart}/insights/${insight}`)
         .select('resourceReference')
         .filter("resourceReference/type eq 'microsoft.graph.driveItem'")
         .top(5)
