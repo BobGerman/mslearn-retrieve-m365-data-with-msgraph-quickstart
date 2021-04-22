@@ -12,3 +12,22 @@ async function displayUI() {
     var content = document.getElementById('content');
     content.style = "display: block";
 }
+
+async function displayTrending() {
+
+    const resultDiv = document.getElementById('trendingFilesResult');
+    const upn = document.getElementById('trendingFilesUpn').value;
+    const trendingFiles = await getTrendingFiles(upn);
+
+    if (trendingFiles.length === 0) {
+        resultDiv.innerHTML = "No trending files found";
+    } else {
+        resultDiv.innerHTML = `
+          <ul>
+            ${trendingFiles.map(file => `<li>
+              <a href="${file.webUrl}" target="_blank">${file.name}</a>
+            </li>`)}
+          </ul>
+        `;
+    }
+}
