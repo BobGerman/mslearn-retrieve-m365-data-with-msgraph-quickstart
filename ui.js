@@ -11,4 +11,17 @@ async function displayUI() {
     signInButton.style = "display: none";
     var content = document.getElementById('content');
     content.style = "display: block";
+
+    displayCoworkers();
+}
+
+async function displayCoworkers() {
+    const coworkers = await getCoworkers();
+    const coworkersList = document.getElementById('coworkersList');
+
+    for (c of coworkers) {
+        const li = document.createElement('li');
+        li.innerHTML = `${c.displayName} (${c.jobTitle})`;
+        coworkersList.appendChild(li);
+    }
 }
