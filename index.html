@@ -12,18 +12,15 @@
       <h4>Welcome <span id="userName"></span></h4>
       <!-- Add for excel -->
       <div id="surveyForm">
-        <input type="radio" name="choice" value="American">American</input><br />
-        <input type="radio" name="choice" value="Canadian">Canadian</input><br />
-        <input type="radio" name="choice" value="Irish">Irish</input><br />
-        <input type="radio" name="choice" value="Pancetta">Pancetta</input><br />
-        <input type="radio" name="choice" value="Rashers">Rashers</input><br />
-        <input type="radio" name="choice" value="Soy">Soy</input><br />
-        <input type="radio" name="choice" value="Turkey">Turkey</input><br /><br />
+        <p>What's your favorite kind of bacon?</p>
+        <div id="surveyRadioButtons"></div><br />
         <input type="button" id="surveyButton" value="Submit" />
       </div>
       <div id="surveyResults" style="display:none">
-        <img id="resultsChart" />
+        <img id="resultsChart" /><br />
+        <input type="button" id="refreshButton" value="Refresh" />
       </div>
+      <!-- End for excel -->
     </div>
     <a id="signin" onclick="displayUI(); return false;" href="#">
       <img src="./images/ms-symbollockup_signin_light.png" alt="Sign in with Microsoft" />

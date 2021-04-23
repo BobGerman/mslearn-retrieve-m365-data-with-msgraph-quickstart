@@ -18,6 +18,18 @@ async function getUser() {
 
 //#region Excel scenario
 
+async function getTableRows(filePath, worksheetName, tableName) {
+    ensureScope('files.read');
+    try {
+        const response = await graphClient
+            .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Tables/${tableName}/rows`)
+            .get();
+        return response.value;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 async function getChartImage(filePath, worksheetName, chartName) {
     ensureScope('files.read');
     try {
