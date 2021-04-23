@@ -17,13 +17,23 @@ async function displayUI() {
 
 //#region Add for excel
 
+const excelFilePath = '/samples/Bacon Survey.xlsx';
+const excelWorksheetName = "Survey";
+const excelResponsesTable = "Responses";
+const excelChoicesTable = "Choices";
+const excelResultsChart = "Chart 1";
+
 async function displaySurvey(userName) {
 
+    const questionParagraph = document.getElementById('question');
     const surveyButton = document.getElementById('surveyButton');
     const refreshButton = document.getElementById('refreshButton');
 
+    const question = await getCellValue(excelFilePath, excelWorksheetName, 0, 1);
+    questionParagraph.innerText = question;
+
     // Add a radio button for each choice in the Choices table in Excel
-    const choices = await getTableRows("/samples/Bacon Survey.xlsx", "Bacon", "Choices");
+    const choices = await getTableRows(excelFilePath, excelWorksheetName, excelChoicesTable);
     for (const row of choices) {
         addRadioButton(row.values[0][0]);
     }
@@ -36,7 +46,7 @@ async function displaySurvey(userName) {
 
         // If the user made a choice, add it and display the overall results
         if (selectedValue) {
-            await addSurveyResult("/samples/Bacon Survey.xlsx", "Bacon", "Responses", userName, selectedValue);
+            await addSurveyResult(excelFilePath, excelWorksheetName, excelResponsesTable, userName, selectedValue);
             await displayResults();
         }
 
@@ -51,7 +61,7 @@ async function displaySurvey(userName) {
 async function displayResults() {
 
     // Get the chart in Base 65 and display it in the image element
-    const chartImage = await getChartImage("/samples/Bacon Survey.xlsx", "Bacon", "Chart 1");
+    const chartImage = await getChartImage(excelFilePath, excelWorksheetName, excelResultsChart);
     const chartElement = document.getElementById('resultsChart');
     chartElement.src = `data:image/png;base64,${chartImage}`;
 
@@ -63,6 +73,8 @@ async function displayResults() {
 
 function addRadioButton(value) {
 
+    const surveyRadioButtons = document.getElementById("surveyRadioButtons");
+
     const radioButton = document.createElement("input");
     radioButton.type = "radio";
     radioButton.name = "choice";
@@ -71,8 +83,6 @@ function addRadioButton(value) {
 
     const label = document.createElement("label");
     label.innerHTML = `${value}<br />`;
-
-    const surveyRadioButtons = document.getElementById("surveyRadioButtons");
     surveyRadioButtons.appendChild(label);
 
 }

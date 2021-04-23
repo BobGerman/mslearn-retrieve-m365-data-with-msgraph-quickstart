@@ -18,23 +18,23 @@ async function getUser() {
 
 //#region Excel scenario
 
-async function getTableRows(filePath, worksheetName, tableName) {
+async function getCellValue(filePath, worksheetName, row, column) {
     ensureScope('files.read');
     try {
         const response = await graphClient
-            .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Tables/${tableName}/rows`)
+            .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/cell(row=${row},column=${column})`)
             .get();
-        return response.value;
+        return response.text[0][0];
     } catch (error) {
         console.error(error);
     }
 }
 
-async function getChartImage(filePath, worksheetName, chartName) {
+async function getTableRows(filePath, worksheetName, tableName) {
     ensureScope('files.read');
     try {
         const response = await graphClient
-            .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Charts/${chartName}/image`)
+            .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Tables/${tableName}/rows`)
             .get();
         return response.value;
     } catch (error) {
@@ -52,6 +52,18 @@ async function addSurveyResult(filePath, worksheetName, tableName, person, choic
             .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Tables/${tableName}/rows`)
             .post(body);
         return;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getChartImage(filePath, worksheetName, chartName) {
+    ensureScope('files.read');
+    try {
+        const response = await graphClient
+            .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Charts/${chartName}/image`)
+            .get();
+        return response.value;
     } catch (error) {
         console.error(error);
     }
