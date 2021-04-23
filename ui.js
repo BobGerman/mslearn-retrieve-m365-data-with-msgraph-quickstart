@@ -18,7 +18,12 @@ async function displayUI() {
 //#region Add for file download
 
 async function displayFiles() {
-    
+
+    await addSurveyResult ("/samples/Bacon Survey.xlsx", "Bacon", "Responses", "Bob", "Irish");
+    const chartImage = await getChartImage("/samples/Bacon Survey.xlsx", "Bacon", "Chart 1");
+    const chartElement = document.getElementById('resultsChart');
+    chartElement.src=`data:image/png;base64,${chartImage}`;
+
     const files = await getFiles();
     const ul = document.getElementById('downloadLinks');
     while (ul.firstChild) {
