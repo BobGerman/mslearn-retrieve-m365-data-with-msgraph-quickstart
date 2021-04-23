@@ -13,20 +13,17 @@
       <!-- Add for excel -->
       <div id="surveyForm">
         <input type="radio" name="choice" value="American">American</input><br />
-        <input type="radio" name="choice" value="American">Canadian</input><br /><br />
+        <input type="radio" name="choice" value="Canadian">Canadian</input><br />
+        <input type="radio" name="choice" value="Irish">Irish</input><br />
+        <input type="radio" name="choice" value="Pancetta">Pancetta</input><br />
+        <input type="radio" name="choice" value="Rashers">Rashers</input><br />
+        <input type="radio" name="choice" value="Soy">Soy</input><br />
+        <input type="radio" name="choice" value="Turkey">Turkey</input><br /><br />
         <input type="button" id="surveyButton" value="Submit" />
       </div>
-      <div id="surveyResults">
+      <div id="surveyResults" style="display:none">
         <img id="resultsChart" />
       </div>
-      <!-- Add for file download -->
-      <hr />
-      <label>Files in your OneDrive root folder:</label>
-      <ul id="downloadLinks"></ul>
-      <!-- Add for file upload -->
-      <hr />
-      <input type="file" onchange="fileSelected(this);" />
-      <div id="uploadMessage"></div>
     </div>
     <a id="signin" onclick="displayUI(); return false;" href="#">
       <img src="./images/ms-symbollockup_signin_light.png" alt="Sign in with Microsoft" />
