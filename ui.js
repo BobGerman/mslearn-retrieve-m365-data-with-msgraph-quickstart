@@ -15,13 +15,34 @@ async function displayUI() {
     displayCoworkers();
 }
 
+// The full list of status values is here:
+// https://docs.microsoft.com/en-us/graph/api/resources/presence?view=graph-rest-1.0
+const COLOR_TABLE = {
+    "Available": "green",
+    "Away": "gold",
+    "BeRightBack": "gold",
+    "Busy": "darkred",
+    "DoNotDisturb": "darkred",
+    "Offline": "gray"
+}
 async function displayCoworkers() {
-    const coworkers = await getCoworkers();
-    const coworkersList = document.getElementById('coworkersList');
+    let coworkers = await getCoworkers();
+    coworkers = await addCurrentPresence(coworkers);
+    displayUsersWithPresence(coworkers);
 
-    for (c of coworkers) {
+    document.getElementById('refreshButton').onclick = async () => {
+        coworkers = await addCurrentPresence(coworkers);
+        displayUsersWithPresence(coworkers);
+    }
+}
+
+function displayUsersWithPresence(coworkers) {
+    const coworkersList = document.getElementById('coworkersList');
+    coworkersList.innerHTML = null;
+    for (const c of coworkers) {
         const li = document.createElement('li');
-        li.innerHTML = `${c.displayName} (${c.jobTitle})`;
+        const bulletHtml = `<span style="color: ${ COLOR_TABLE[c.activity] };">\u2b24</span>`
+        li.innerHTML = `${bulletHtml} ${c.displayName} - ${c.activity}`;
         coworkersList.appendChild(li);
     }
 }

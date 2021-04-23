@@ -40,3 +40,21 @@ async function getCoworkers() {
     }
 
 }
+
+async function addCurrentPresence(users) {
+
+    ensureScope('presence.read.all');
+
+    const userIds = users.map (u => u.id);
+    const presenceInfo = await graphClient
+        .api(`/communications/getPresencesByUserId`)
+        .post({
+            ids: userIds
+        });
+    for (u of users) {
+        const p = presenceInfo.value.find(i => i.id === u.id);
+        u.activity = p.activity;
+        u.availability = p.availability
+    }
+    return users;
+}
