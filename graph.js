@@ -41,7 +41,7 @@ async function getCoworkers() {
 
 }
 
-async function addCurrentPresence(users) {
+async function getPresence(users) {
 
     ensureScope('presence.read.all');
 
