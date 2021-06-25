@@ -46,7 +46,7 @@ async function addSurveyResult(filePath, worksheetName, tableName, person, choic
     ensureScope('files.readwrite');
     try {
         const body = {
-            values: [ [ person, choice ] ]
+            values: [[person, choice]]
         };
         const response = await graphClient
             .api(`/me/drive/root:/${filePath}:/workbook/worksheets/${worksheetName}/Tables/${tableName}/rows`)

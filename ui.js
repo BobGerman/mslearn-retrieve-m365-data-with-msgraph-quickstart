@@ -26,8 +26,6 @@ const excelResultsChart = "Chart 1";
 async function displaySurvey(userName) {
 
     const questionParagraph = document.getElementById('question');
-    const surveyButton = document.getElementById('surveyButton');
-    const refreshButton = document.getElementById('refreshButton');
 
     const question = await getCellValue(excelFilePath, excelWorksheetName, 0, 1);
     questionParagraph.innerText = question;
@@ -38,6 +36,7 @@ async function displaySurvey(userName) {
         addRadioButton(row.values[0][0]);
     }
 
+    const surveyButton = document.getElementById('surveyButton');
     surveyButton.onclick = async () => {
 
         // Find the radio button that was selected
@@ -52,6 +51,7 @@ async function displaySurvey(userName) {
 
     }
 
+    const refreshButton = document.getElementById('refreshButton');
     refreshButton.onclick = async () => {
         await displayResults();
     }
