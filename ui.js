@@ -32,23 +32,23 @@ document.getElementById('insightsButton').onclick =
                 resultDiv.innerHTML = `<p>No ${insightType} files found</p>`;
             } else {
                 // STEP 1
-                resultDiv.innerHTML = `
-                    <h3>${insightName} files for ${upn ? upn : "/me"}:</h3>
-                    <ul>
-                        ${files.map(file => `<li>
-                        <a href="${file.webUrl}" target="_blank">${file.name}</a>
-                        </li>`).join('')}
-                    </ul>`;
-                // STEP 2
                 // resultDiv.innerHTML = `
                 //     <h3>${insightName} files for ${upn ? upn : "/me"}:</h3>
                 //     <ul>
                 //         ${files.map(file => `<li>
-                //         <a href="${file.webUrl}" target="_blank">${file.name}</a><br />
-                //         <i><small>Last modified by ${file.lastModifiedBy.user.email} 
-                //             on ${file.lastModifiedDateTime}</small></i>
+                //         <a href="${file.webUrl}" target="_blank">${file.name}</a>
                 //         </li>`).join('')}
                 //     </ul>`;
+                // STEP 2
+                resultDiv.innerHTML = `
+                    <h3>${insightName} files for ${upn ? upn : "/me"}:</h3>
+                    <ul>
+                        ${files.map(file => `<li>
+                        <a href="${file.webUrl}" target="_blank">${file.name}</a><br />
+                        <i><small>Last modified by ${file.lastModifiedBy.user.email} 
+                            on ${file.lastModifiedDateTime}</small></i>
+                        </li>`).join('')}
+                    </ul>`;
             }
         } catch (error) {
             const message = insightType === 'shared' ? "NOTE: Users can only read their own shared insights" : "";

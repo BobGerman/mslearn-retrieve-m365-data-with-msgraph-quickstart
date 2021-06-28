@@ -27,38 +27,45 @@ async function getFileInsights(upn, insight) {
 
     ensureScope('sites.read.all');
 
-    const trendingIds = await graphClient
+    const insights = await graphClient
         .api(`${userQueryPart}/insights/${insight}`)
-        // .select('resourceReference')
         .filter("resourceReference/type eq 'microsoft.graph.driveItem'")
         .top(5)
         .get();
 
-    if (trendingIds.value.length > 0) {
+    if (insights.value.length > 0) {
 //  PASS 1:
-        result = trendingIds.value.map(t => ({
-            name: t.resourceVisualization.title,
-            webUrl: t.resourceReference.webUrl
-        }));
-// PASS 2
-        // let i = 1;
-        // const batchRequests = trendingIds.value.map(t => ({
-        //     id: (i++).toString(),
-        //     request: new Request(t.resourceReference.id,
-        //         { method: "GET" })
+        // result = insights.value.map(t => ({
+        //     name: t.resourceVisualization.title,
+        //     webUrl: t.resourceReference.webUrl
         // }));
+// SLOW EXAMPLE:
+        // let i = 1;
+        // let promises = insights.value.map(async t => {
+        //     return await graphClient
+        //         .api(t.resourceReference.id)
+        //         .get();
+        // });
+        // result = await Promise.all(promises);
+// PASS 2
+        let i = 1;
+        const batchRequests = insights.value.map(t => ({
+            id: (i++).toString(),
+            request: new Request(t.resourceReference.id,
+                { method: "GET" })
+        }));
 
-        // const batchContent = await (new MicrosoftGraph.BatchRequestContent(batchRequests)).getContent();
-        // const batchResponse = await graphClient
-        //     .api('/$batch')
-        //     .post(batchContent);
-        // const batchResponseContent = new MicrosoftGraph.BatchResponseContent(batchResponse);
-        // for (let j = 1; j < i; j++) {
-        //     let response = await batchResponseContent.getResponseById(j.toString());
-        //     if (response.ok) {
-        //         result.push(await response.json());
-        //     }
-        // }
+        const batchContent = await (new MicrosoftGraph.BatchRequestContent(batchRequests)).getContent();
+        const batchResponse = await graphClient
+            .api('/$batch')
+            .post(batchContent);
+        const batchResponseContent = new MicrosoftGraph.BatchResponseContent(batchResponse);
+        for (let j = 1; j < i; j++) {
+            let response = await batchResponseContent.getResponseById(j.toString());
+            if (response.ok) {
+                result.push(await response.json());
+            }
+        }
     // STOP HERE
     }
     return result;
