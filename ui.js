@@ -60,7 +60,7 @@ async function displaySurvey(userName) {
 
 async function displayResults() {
 
-    // Get the chart in Base 65 and display it in the image element
+    // Get the chart in Base 64 and display it in the image element
     const chartImage = await getChartImage(excelFilePath, excelWorksheetName, excelResultsChart);
     const chartElement = document.getElementById('resultsChart');
     chartElement.src = `data:image/png;base64,${chartImage}`;
