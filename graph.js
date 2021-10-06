@@ -16,3 +16,13 @@ async function getUser() {
         .get();
 }
 
+async function getEmails() {
+    ensureScope('mail.read');
+  
+    return await graphClient
+      .api('/me/messages')
+      .select('subject,receivedDateTime')
+      .orderby('receivedDateTime desc')
+      .top(10)
+      .get();
+  }
